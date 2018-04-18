@@ -38,6 +38,6 @@ class Lexer {
                 exit("Unable to find a rule for : " . $code);
             }
         }
-        var_dump($this->results);
+        return $this->results;
     }
 }
