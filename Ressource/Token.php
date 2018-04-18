@@ -48,7 +48,9 @@ $rules = [
     [ '\{', 'LEFT_BRACE' ],
     [ '\}', 'RIGHT_BRACE' ],
     [ '\d+', 'INTEGER' ],
-    [ '\;' , 'POINT_VIRGULE'],
+    [ '\;' , 'SEMICOLON'],
     [ 'function', 'FUNCTION'],
-    [ 'return', 'RETURN']
+    [ 'return', 'RETURN'],
+    [ 'print', 'PRINT'],
+    [ '\w+', 'STRING']
 ];

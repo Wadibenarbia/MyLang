@@ -16,18 +16,32 @@ class Parser {
     private function expect($type) {
         $token = $this->pop();
         if ($type != $token['type']) {
+            var_dump($this->parser);
             throw new Exception('Unexpected type ' . $token['type'] . ', wanted: ' . $type);
         }
         return $token;
     }
+
     private function parse_statement() {
-        if ($this->peek()['type'] == 'PRINT') { //switch des diff function
-            $this->pop();
-            $value = $this->expect('STRING');
-            $this->expect('SEMICOLON');
-            return array('type' => 'PRINT', 'value' => $value);
+        $rules = [
+            [ 'print', 'PRINT' ],
+            [ 'if', 'IF' ],
+
+        ];
+        switch ($function) {
+            case $this->peek()['type'] == 'PRINT':
+                $this->pop();
+                $value = $this->expect('STRING');
+                $this->expect('SEMICOLON');
+                return array('type' => 'PRINT', 'value' => $value);
+                break;
+            case $this->peek()['type'] == 'IF':
+                parse_if();
+                break;
         }
     }
+
+
     private function parse_block() {
         $this->expect('LEFT_BRACE');
         $statements = [];
@@ -43,6 +57,7 @@ class Parser {
             $this->expect('LEFT_PAREN');
             $value = $this->expect('INTEGER');
             $this->expect('RIGHT_PAREN');
+
             $block = $this->parse_block();
             return array('type' => 'if', 'condition' => $value, 'block' => $block);
             // var_dump($value['value']);
