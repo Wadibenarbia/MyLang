@@ -5,7 +5,7 @@ include "./class/Argument.php";
 include "./class/Lexer.php";
 include "./class/Parser.php";
 include "./Ressource/Token.php";
-$code = 'if (1){}';
+$code = 'if (1){if{(test)}}';
 $Argument =  new Argument($argv, $argc);
 $Verification =  new Verification($Argument->lunch());
 $Verification->is_ready();

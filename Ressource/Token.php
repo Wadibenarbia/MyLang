@@ -43,12 +43,14 @@
 
 $rules = [
     [ 'if', 'IF' ],
+    [ '\;' , 'SEMICOLON'],
     [ '\(', 'LEFT_PAREN' ],
     [ '\)', 'RIGHT_PAREN' ],
     [ '\{', 'LEFT_BRACE' ],
     [ '\}', 'RIGHT_BRACE' ],
     [ '\d+', 'INTEGER' ],
-    [ '\;' , 'POINT_VIRGULE'],
     [ 'function', 'FUNCTION'],
+    [ 'print', 'PRINT'],
+    [ '\w+', 'STRING'],
     [ 'return', 'RETURN']
 ];

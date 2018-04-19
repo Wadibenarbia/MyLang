@@ -1,6 +1,10 @@
 <?php
 class Parser {
 
+    private $My_function = [
+        [ 'IF', "parse_if()" ],
+        [ 'PRINT', "parse_print()"  ]
+    ];
 
     public function __construct($parser)
     {
@@ -21,11 +25,9 @@ class Parser {
         return $token;
     }
     private function parse_statement() {
-        if ($this->peek()['type'] == 'PRINT') { //switch des diff function
-            $this->pop();
-            $value = $this->expect('STRING');
-            $this->expect('SEMICOLON');
-            return array('type' => 'PRINT', 'value' => $value);
+        foreach ($this->My_function as $my_func) {
+            if (peek()['type'] == $my_func[0])
+                $my_func[1]();
         }
     }
     private function parse_block() {
@@ -50,11 +52,20 @@ class Parser {
             return array();
         }
     }
+    private function parse_print() {
+        echo "\nYEAAAAAA\n";
+        $this->pop();
+        $value = $this->expect('STRING');
+        echo "\n\ntest\n\n";
+        $this->expect('SEMICOLON');
+        return array('type' => 'PRINT', 'value' => $value);
+    }
+
         public function parsing() {
         $result = $this->parse_if();
         if ($this->parser) {
             exit ('Parse error');
-        }
         var_dump($result);
+        }
     }
 }
