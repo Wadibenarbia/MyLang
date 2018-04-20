@@ -1,8 +1,0 @@
-function toto(){
-    if(1){
-        if(1 > 1){
-	        §test=1;
-		        PRINT TOTO;
-			    }}
-
-}
