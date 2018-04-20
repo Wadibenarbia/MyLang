@@ -44,8 +44,12 @@ Class Verification {
             return false;
         } else {
             echo "\033[31m[Failed] ".$this->error[0]."\33[0m";
+            return false;
         }
-        return false;
+    }
+
+    public function file(){
+        return file_get_contents($this->file);
     }
 
 }
