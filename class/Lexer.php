@@ -9,7 +9,6 @@ class Lexer {
         // $this->results = $results;
     }
 
-
     public function print_code($code) {
         echo $code;
     }
@@ -38,7 +37,6 @@ class Lexer {
                 exit("Unable to find a rule for : " . $code);
             }
         }
-        var_dump($this->results);
         return $this->results;
     }
 

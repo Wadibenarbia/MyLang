@@ -1,10 +1,12 @@
 <?php
 class Parser {
 
+    private  $finaly = array();
 
-    public function __construct($parser)
+    public function __construct($parser ,$tab)
     {
         $this->parser = $parser;
+        $this->tab = $tab;
     }
 
     private function peek() {
@@ -24,36 +26,75 @@ class Parser {
         }
         return $token;
     }
-    private function parse_statement() {
+
+    private function parse_print() {
         if ($this->peek()['type'] == 'PRINT') { //switch des diff function
             $this->pop();
             $value = $this->expect('STRING');
             $this->expect('SEMICOLON');
             return array('type' => 'PRINT', 'value' => $value);
-        }else if($this->peek()['type'] == 'IF'){
-            return $this->parse_if();
         }
     }
+
+    private function parse_statement() {
+        if(array_key_exists($this->peek()['type'],$this->tab)){
+            return call_user_func($this->tab[$this->peek()['type']]);
+        }
+    }
+
     private function parse_block() {
         $this->expect('LEFT_BRACE');
         $statements = [];
-        while ($statement = $this->parse_statement()) {
-            $statements[] = $statement;
+        while ($this->peek()['type'] != 'RIGHT_BRACE'){
+            while ($statement = $this->parse_statement()) {
+                $statements[] = $statement;
+            }
         }
         $this->expect('RIGHT_BRACE');
         return array('type' => 'block', 'statements' => $statements);
+    }
+
+    private function parse_var() {
+        if ($this->peek()['type'] == "VARIABLE") {
+            $this->pop();
+            $this->expect('STRING');
+            if($this->peek()['type'] == "EGAL"){
+                $this->pop();
+            if($this->peek()['type'] == 'STRING'){
+                $value = $this->expect('STRING');
+            }else{
+                $value = $this->expect('INTEGER');
+            }
+                $this->expect('SEMICOLON');
+                return array('type' => 'varible', 'value' => $value);
+                exit();
+                return array();
+            } else {
+            $this->expect('SEMICOLON');
+            return array('type' => 'varible');
+            exit();
+            return array();
+            }
+        }
     }
     private function parse_if() {
         if ($this->peek()['type'] == "IF") {
             $this->pop();
             $this->expect('LEFT_PAREN');
             $value = $this->expect('INTEGER');
+            if($this->peek()['type'] == 'COMPARE'){
+               $compare = $this->expect('COMPARE');
+                $val = $this->expect('INTEGER');
+                $this->expect('RIGHT_PAREN');
+                $block = $this->parse_block();
+                return array('type' => 'if', 'condition' => array($value, $compare, $val), 'block' => $block);
+                exit();
+                return array();
+            }
             $this->expect('RIGHT_PAREN');
             $block = $this->parse_block();
-            var_dump($block);
             return array('type' => 'if', 'condition' => $value, 'block' => $block);
             exit();
-
             return array();
         }
     }
@@ -63,29 +104,24 @@ class Parser {
             $this->pop();
             $this->expect('STRING');
             $this->expect('LEFT_PAREN');
-            $value = $this->expect('INTEGER');
             $this->expect('RIGHT_PAREN');
             $block = $this->parse_block();
-            return array('type' => 'FUNCTION', 'argument' => $value, 'block' => $block);
+            return array('type' => 'FUNCTION', 'block' => $block);
             exit();
             return array();
         }
     }
-        public function parsing($tab) {
+        public function parsing() {
 
         while($this->peek())
         {
-            if(array_key_exists($this->peek()['type'],$tab))
+            if(array_key_exists($this->peek()['type'],$this->tab))
             {
-                call_user_func($tab[$this->peek()['type']]);
+              $this->finaly = call_user_func($this->tab[$this->peek()['type']]);
             }else {
-                exit('test');
+                throw new Exception('Unexpected type ' . $this->peek()['type'] .'error');
             }
-            // $result = $this->parse_if();
-            // if ($this->parser) {
-            //     exit ('Parse error');
-            // }
         }
-        // var_dump($result);
+        var_dump($this->finaly);
     }
 }

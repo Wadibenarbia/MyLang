@@ -6,22 +6,24 @@ $rules = [
     [ '\(', 'LEFT_PAREN' ],
     [ '\)', 'RIGHT_PAREN' ],
     [ '\{', 'LEFT_BRACE' ],
+    [ 'RETURN', 'RETURN'],
     [ '\}', 'RIGHT_BRACE' ],
     [ '\d+', 'INTEGER' ],
+    ['PRINT', 'PRINT'],
     [ '\;' , 'SEMICOLON'],
     [ 'function', 'FUNCTION'],
-    [ 'return', 'RETURN'],
-    ['else', 'ELSE'],
-    ['^§+[\w]+', 'VARIABLE'],
-    ['^[=]+[\w+]+', 'DECLARE'],
+    ['§', 'VARIABLE'],
     ['\w+', 'STRING'],
     [',', 'SEPARATOR'],
+    ['=','EGAL'],
+    ['<|>|=', 'COMPARE'],
 ];
 
 
 $tab_func = array (
-    'PRINT' => 'Parser::parse_statement',
     'IF'    => "Parser::parse_if",
     'FUNCTION' => 'Parser::parse_func',
-    'VARIABLE' => 'Parser::parse_var'
+    'VARIABLE' => 'Parser::parse_var',
+    'PRINT' => 'Parser::parse_print',
+    'RETURN' => 'Parser::parse_return'
 );
